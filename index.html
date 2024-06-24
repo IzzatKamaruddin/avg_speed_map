@@ -63,17 +63,20 @@
         }
 
         window.addEventListener("message", function(event) {
-            if (event.data.type === "mapState") {
+            // Replace 'your-origin' with the actual origin you expect messages from
+            if (event.origin === 'your-origin' && event.data.type === "mapState") {
                 currentMapState = event.data.state;
             }
         }, false);
 
         document.getElementById('mapSelector').addEventListener('change', function() {
             saveMapState();
-            document.getElementById('mapFrame').onload = function() {
+            var iframe = document.getElementById('mapFrame');
+            iframe.onload = function() {
                 loadMapState();
+                iframe.onload = null; // Clear onload after execution to prevent it from running again
             };
-            document.getElementById('mapFrame').src = this.value;
+            iframe.src = this.value;
         });
     </script>
 </body>
